@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('associateds', function (Blueprint $table) {
+        Schema::create('associates', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('last_name');
+            $table->string('dni')->unique();
+            $table->string('address_house');
+            $table->string('housing_registration')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('associateds');
+        Schema::dropIfExists('associates');
     }
 };
