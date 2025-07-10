@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('categoria', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+    Route::resource('Asociado', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
 });
 
 require __DIR__.'/auth.php';
