@@ -20,12 +20,6 @@
                 <flux:navlist.item icon="users" :href="route('admin.asociados.index')"
                     :current="request() -> routeIs('admin.asociados.index')" wire:navigate>{{ __('Usuarios') }}
                 </flux:navlist.item>
-                <flux:navlist.item icon="tag" :href="route('admin.reported_incidence.index')"
-                    :current="request() -> routeIs('admin.reported_incidence.index')" wire:navigate>{{ __('Reporte Inicidencias') }}
-                </flux:navlist.item>
-                <flux:navlist.item icon="credit-card" :href="route('admin.pago_cuotas.index')"
-                    :current="request() -> routeIs('admin.pago_cuotas.index')" wire:navigate>{{ __('Pagos') }}
-                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
