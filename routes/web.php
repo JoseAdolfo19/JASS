@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AsociadoController;
+use App\Http\Controllers\Admin\PagoCuotasController;
+use App\Http\Controllers\Admin\ReportarIncidenciaController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -22,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('Asociado', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+    Route::resource('Reporte_Incidencia', ReportarIncidenciaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.reported_incidence');
+    Route::resource('Pago_Cuotas', PagoCuotasController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.pago_cuotas');
 });
+
 
 require __DIR__.'/auth.php';
