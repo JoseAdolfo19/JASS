@@ -22,8 +22,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
+<<<<<<< HEAD
     Route::resource('asociados', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
     Route::resource('gastoproductos', GastoProductosController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.gastoproductos');
+=======
+    Route::resource('Asociado', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+>>>>>>> main
 });
 
 require __DIR__.'/auth.php';
