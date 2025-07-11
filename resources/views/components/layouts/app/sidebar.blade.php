@@ -20,6 +20,9 @@
                 <flux:navlist.item icon="users" :href="route('admin.asociados.index')"
                     :current="request() -> routeIs('admin.asociados.index')" wire:navigate>{{ __('Usuarios') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="exclamation-triangle" :href="route('admin.incidencia.index')"
+                    :current="request() -> routeIs('admin.incidencia.index')" wire:navigate>{{ __('Incidencias') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
