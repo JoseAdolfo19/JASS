@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('gasto_productos', function (Blueprint $table) {
             $table->id();
+            $table->string('description_product');
+            $table->string('supplier');
+            $table->string('amount');
+            $table->decimal('total_cost');
+            $table->date('date_buy');
             $table->timestamps();
         });
     }

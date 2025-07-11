@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AsociadoController;
+use App\Http\Controllers\Admin\GastoProductosController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -21,7 +22,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('categoria', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+    Route::resource('asociados', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+    Route::resource('gastoproductos', GastoProductosController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.gastoproductos');
 });
 
 require __DIR__.'/auth.php';

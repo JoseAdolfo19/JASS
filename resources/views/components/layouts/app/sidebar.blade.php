@@ -20,6 +20,9 @@
                 <flux:navlist.item icon="users" :href="route('admin.asociados.index')"
                     :current="request() -> routeIs('admin.asociados.index')" wire:navigate>{{ __('Usuarios') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="users" :href="route('admin.gastoproductos.index')"
+                    :current="request() -> routeIs('admin.gastoproductos.index')" wire:navigate>{{ __('Gasto en Productos') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
