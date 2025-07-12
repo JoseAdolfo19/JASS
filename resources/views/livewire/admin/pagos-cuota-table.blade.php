@@ -40,6 +40,10 @@
             <h1 class="text-2xl font-bold text-white">
                 Lista de Incidencias
             </h1>
+            <a href="{{ route('admin.pago_cuotas.export-excel') }}"
+                   class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    Exportar Excel
+            </a>
         </div>
 
         <div class="overflow-x-auto">
@@ -65,7 +69,7 @@
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $pago->issue_date }}</td>
                             <td class="px-4 py-4">
                                 <span class="px-2 py-1 text-xs rounded-full {{ $pago->status ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300' }}">
-                                    {{ $pago->status ? 'Activo' : 'Inactivo' }}
+                                    {{ $pago->status ? 'Pagado' : 'Pendiente' }}
                                 </span>
                             </td>
                             <td class="px-4 py-4 text-sm text-right">

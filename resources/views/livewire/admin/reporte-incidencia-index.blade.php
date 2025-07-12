@@ -41,109 +41,113 @@
         <h1 class="text-2xl font-bold text-white mb-6">
             Reportar Nueva Incidencia
         </h1>
-        <form action="{{ route('admin.reported_incidence.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.reported_incidence.store') }}" method="POST" data-flux-component="form">
             @csrf
-            <!-- Campo ID Asociados -->
-            <div>
-                <label for="id_associates" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Nombre del Asociado <span class="text-red-500">*</span>
-                </label>
-                <select name="id_associates" id="id_associates"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                    <option value="" disabled selected>Seleccione un Asociado</option>
-                    @foreach ($associates as $associate)
-                        <option value="{{ $associate->id }}">{{ $associate->name }}</option>
-                    @endforeach
-                </select>
-                @error('id_associates')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror               
+
+            {{-- Fila 1: Asociado - Estado - Tipo de incidencia --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="id_associates" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Nombre del Asociado <span class="text-red-500">*</span>
+                    </label>
+                    <select name="id_associates" id="id_associates"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required>
+                        <option value="" disabled selected>Seleccione un Asociado</option>
+                        @foreach ($associates as $associate)
+                            <option value="{{ $associate->id }}">{{ $associate->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_associates')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="status" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Estado <span class="text-red-500">*</span>
+                    </label>
+                    <select id="status" name="status"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                    @error('status')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="type_incidence" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Tipo de Incidencia <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="type_incidence" name="type_incidence"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                        placeholder="Ej: Fallo de equipo" required>
+                    @error('type_incidence')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <!-- Campo lacacion -->
-            <div>
-                <label for="location" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Locacion <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="location" name="location"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ej: Calle s/n" required>
-                @error('location')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
+
+            {{-- Fila 2: Costo - Ubicación - Fecha Reporte --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="repair_cost" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Costo de Reparación
+                    </label>
+                    <input type="text" id="repair_cost" name="repair_cost"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                        placeholder="Ingrese costo de reparación">
+                    @error('repair_cost')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="location" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Locación <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="location" name="location"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                        placeholder="Ej: Calle s/n" required>
+                    @error('location')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="date_reported" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Fecha de Reporte <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="date_reported" name="date_reported"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required>
+                    @error('date_reported')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <!-- Campo Descripción --> 
-            <div>
-                <label for="description" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Descripción <span class="text-red-500">*</span>
-                </label>
-                <textarea id="description" name="description" rows="3"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Describe la incidencia" required></textarea>
-                @error('description')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Tipo de Incidencia -->
-            <div>
-                <label for="type_incidence" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Tipo de Incidencia <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="type_incidence" name="type_incidence"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ej: Fallo de equipo" required>
-                @error('type_incidence')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Fecha Reporte -->
-            <div>
-                <label for="date_reported" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Fecha de Reporte <span class="text-red-500">*</span>
-                </label>
-                <input type="date" id="date_reported" name="date_reported"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                @error('date_reported')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Fecha Solución -->
-            <div>
-                <label for="date_resolved" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Fecha de Solución
-                </label>
-                <input type="date" id="date_resolved" name="date_resolved"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
-                @error('date_resolved')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Costo de Reparación -->
-            <div>
-                <label for="repair_cost" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Costo de Reparación
-                </label>
-                <input type="text" id="repair_cost" name="repair_cost"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ingrese costo de reparación">
-                @error('repair_cost')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Estado -->
-            <div>
-                <label for="status" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Estado <span class="text-red-500">*</span>
-                </label>
-                <select id="status" name="status"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="resuelto">Resuelto</option>
-                </select>
-                @error('status')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
+
+            {{-- Fila 3: Fecha Resolución + Descripción + espacio vacío --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="date_resolved" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Fecha de Solución
+                    </label>
+                    <input type="date" id="date_resolved" name="date_resolved"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
+                    @error('date_resolved')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="md:col-span-2">
+                    <label for="description" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Descripción <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="description" name="description" rows="3"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                        placeholder="Describe la incidencia" required></textarea>
+                    @error('description')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <div class="relative my-8">
@@ -156,11 +160,11 @@
                 Campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios
             </div>
             <!-- Botón de acción principal -->
-            <div class="flex justify-end">
+            <div class="flex justify-end w-full mt-6">
                 <button type="submit"
                     class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-all duration-200 shadow-lg hover:shadow-xl">
                     Reportar Incidencia
-                </button>
+                   </button>
             </div>
         </form>
     </div>

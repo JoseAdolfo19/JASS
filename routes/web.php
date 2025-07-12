@@ -25,9 +25,13 @@ Route::middleware(['auth'])->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('asociados', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
+    Route::get('asociados/export-pdf', [AsociadoController::class, 'exportPdf'])->name('admin.asociados.export-pdf'); 
     Route::resource('gastoproductos', GastoProductosController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.gastoproductos');
+    Route::get('gastoproductos/export-excel', [GastoProductosController::class, 'exportExcel'])->name('admin.gastoproductos.export-excel');
     Route::resource('reportes', ReportarIncidenciaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.reported_incidence');
+    Route::get('reportes/export-pdf', [ReportarIncidenciaController::class, 'exportPdf'])->name('admin.reported_incidence.export-pdf');
     Route::resource('pagos', PagoCuotasController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.pago_cuotas');
+    Route::get('pagos/export-excel', [PagoCuotasController::class, 'exportExcel'])->name('admin.pago_cuotas.export-excel');
 
 });
 

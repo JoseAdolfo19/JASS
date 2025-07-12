@@ -40,6 +40,10 @@
             <h1 class="text-2xl font-bold text-white">
                 Lista de Incidencias
             </h1>
+             <a href="{{ route('admin.reported_incidence.export-pdf') }}"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Exportar PDF
+            </a>
         </div>
 
         <div class="overflow-x-auto">
@@ -52,6 +56,7 @@
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Descripción</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Tipo de Incidencia</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Fecha Reporte</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Fecha Resolución</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Estado</th>
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
                     </tr>
@@ -65,6 +70,7 @@
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($incidence->description, 50) }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $incidence->type_incidence }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $incidence->date_reported }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $incidence->date_resolved }}</td>
                             <td class="px-4 py-4">
                                 <span class="px-2 py-1 text-xs rounded-full {{ $incidence->status ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300' }}">
                                     {{ $incidence->status ? 'Activo' : 'Inactivo' }}
@@ -166,7 +172,15 @@
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
-                            <!-- Campo Estado -->  
+
+                            <!-- Campo Fecha Resolución -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Fecha de Resolución</label>
+                                <input type="date" x-model="currentDateResolved" name="date_resolved"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+
+                            <!-- Campo Estado -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-zinc-300 mb-2">Estado</label>
                                 <select name="status"
@@ -228,14 +242,16 @@
             currentDescription: '',
             currentTypeIncidence: '',
             currentDateReported: '',
+            currentDateResolved: '',
 
-            openModal(id, id_associates, location, description, type_incidence, date_reported) {
+            openModal(id, id_associates, location, description, type_incidence, date_reported, date_resolved) {
                 this.currentId = id;
                 this.currentNombreAsociado = id_associates;
                 this.currentLocation = location; 
                 this.currentDescription = description;
                 this.currentTypeIncidence = type_incidence;
                 this.currentDateReported = date_reported;
+                this.currentDateResolved = date_resolved || ''; // Puede ser vacío si no hay resolución
                 this.isOpen = true;
                 document.body.classList.add('overflow-hidden');
             },

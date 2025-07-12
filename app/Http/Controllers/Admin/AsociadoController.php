@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Associate;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -80,5 +81,11 @@ class AsociadoController extends Controller
         $associate->update(['status' => false]);
         
         return redirect()->route('admin.asociados.index')->with('success', 'Asociado eliminado exitosamente.');
+    }
+    public function exportPdf()
+    {
+        $associates = Associate::where('status', 1)->orWhere('status', 0)->get();
+        $pdf = Pdf::loadView('admin.asociados.pdf', compact('associates'));
+        return $pdf->download('reporte_asociados.pdf');
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\GastosProductosExport;
 use App\Http\Controllers\Controller;
 use App\Models\GastoProductos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GastoProductosController extends Controller
 {
@@ -18,6 +20,7 @@ class GastoProductosController extends Controller
     public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
         'description_product' => 'required|string|max:255',
         'supplier' => 'required|string|max:255',
         'amount' => 'required|string|max:255',
@@ -30,6 +33,7 @@ class GastoProductosController extends Controller
         $validator->validate();
 
         $gastoproductos = GastoProductos::create([
+            'name' => $request->name,
             'description_product' => $request->description_product,
             'supplier' => $request->supplier,
             'amount' => $request->amount,
@@ -46,6 +50,7 @@ class GastoProductosController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
             'description_product' => 'required|string|max:255',
             'supplier' => 'required|string|max:255',
             'amount' => 'required|string|max:255',
@@ -58,6 +63,7 @@ class GastoProductosController extends Controller
 
             $gastoproductos = GastoProductos::findOrFail($id);
             $gastoproductos->update([
+                'name' => $request->name,
                 'description_product' => $request->description_product,
                 'supplier' => $request->supplier,
                 'amount' => $request->amount,
@@ -78,4 +84,10 @@ class GastoProductosController extends Controller
         GastoProductos::findOrFail($id)->delete();
         return redirect()->route('admin.gastoproductos.index')->with('success', 'El gasto de productos a sido eliminado correctamente.');
     }
+    public function exportExcel()
+{
+    return Excel::download(new GastosProductosExport, 'reporte_gastos_productos.xlsx');
+}
+
+
 }

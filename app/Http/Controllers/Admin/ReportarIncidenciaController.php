@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ReportedIncidence;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -39,13 +40,13 @@ class ReportarIncidenciaController extends Controller
                 'date_resolved' => $request->date_resolved,
                 'location' => $request->location,
                 'repair_cost' => $request->repair_cost,
-                'status' => $request->status=="pendiente"?0:1,
+                'status' => $request->status == "pendiente" ? 0 : 1,
             ]);
             return redirect()->route('admin.reported_incidence.index')
                 ->with('success', 'Incidencia creada con éxito.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())
-                         ->withInput();
+                ->withInput();
         }
     }
 
@@ -75,7 +76,7 @@ class ReportarIncidenciaController extends Controller
                 'date_resolved' => $request->date_resolved,
                 'location' => $request->location,
                 'repair_cost' => $request->repair_cost,
-                'status' => $request->status=="pendiente"?0:1,
+                'status' => $request->status == "pendiente" ? 0 : 1,
 
             ]);
 
@@ -83,7 +84,7 @@ class ReportarIncidenciaController extends Controller
                 ->with('success', 'Incidencia actualizada con éxito.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())
-                         ->withInput();
+                ->withInput();
         }
     }
 
@@ -94,5 +95,12 @@ class ReportarIncidenciaController extends Controller
 
         return redirect()->route('admin.reported_incidence.index')
             ->with('success', 'Incidencia eliminada con éxito.');
+    }
+
+    public function exportPdf()
+    {
+        $incidences = ReportedIncidence::where('status', 1)->orWhere('status', 0)->get();
+        $pdf = Pdf::loadView('Admin.reported_incidence.pdf', compact('incidences'));
+        return $pdf->download('reporte_incidencias.pdf');
     }
 }

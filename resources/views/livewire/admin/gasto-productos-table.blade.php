@@ -40,6 +40,10 @@
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
                 Lista de Gasto en Productos
             </h1>
+            <a href="{{ route('admin.gastoproductos.export-excel') }}"
+               class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                Exportar Excel
+            </a>
         </div>
 
         <div class="overflow-x-auto">
@@ -47,6 +51,7 @@
                 <thead class="bg-zinc-800">
                     <tr>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">#</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Producto</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Descripcion del Producto</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Proveedor</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Cantidad</th>
@@ -59,6 +64,7 @@
                     @foreach ($gastoproductos as $gastoproducto)
                         <tr>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->name }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->description_product }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->supplier }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->amount }}</td>
@@ -68,7 +74,7 @@
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
-                                    @click="openModal({{ $gastoproducto->id }}, '{{ addslashes($gastoproducto->description_product) }}', '{{ addslashes($gastoproducto->supplier) }}', '{{ addslashes($gastoproducto->amount) }}', '{{ addslashes($gastoproducto->total_cost) }}', '{{ $gastoproducto->date_buy }}')"
+                                    @click="openModal({{ $gastoproducto->id }},'{{ addslashes($gastoproducto->name) }}', '{{ addslashes($gastoproducto->description_product) }}', '{{ addslashes($gastoproducto->supplier) }}', '{{ addslashes($gastoproducto->amount) }}', '{{ addslashes($gastoproducto->total_cost) }}', '{{ $gastoproducto->date_buy }}')"
                                     class="text-blue-500 hover:text-blue-400 mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -130,6 +136,13 @@
 
                         <div class="px-8 py-8">
                             <h3 class="text-xl font-semibold text-white mb-6">Editar Gasto de Productos</h3>
+                            <!-- Campo Producto -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Producto</label>
+                                <input type="text" x-model="currentName" name="name"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                            </div>
 
                             <!-- Campo Descripcion del producto -->
                             <div class="mb-6">
@@ -217,14 +230,16 @@
         return {
             isOpen: false,
             currentId: null,
+            currentName: '',
             currentDescription_product: '',
             currentSupplier: '',
             currentAmount:'',
             currentTotal_cost: '',
             currentDate_buy: '',
 
-            openModal(id, description_product, supplier, amount, total_cost, date_buy) {
+            openModal(id, name, description_product, supplier, amount, total_cost, date_buy) {
                 this.currentId = id;
+                this.currentName = name;
                 this.currentDescription_product = description_product;
                 this.currentSupplier = supplier;
                 this.currentAmount = amount;

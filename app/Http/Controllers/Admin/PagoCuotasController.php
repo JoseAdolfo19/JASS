@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PagoCuotasExport;
 use App\Http\Controllers\Controller;
 use App\Models\QuotaPayments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PagoCuotasController extends Controller
 {
-    
+
     public function index()
     {
         return view('admin.pago_cuotas.index');
@@ -41,7 +43,7 @@ class PagoCuotasController extends Controller
                 ->with('success', 'Pago de cuota registrado con éxito.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())
-                         ->withInput();
+                ->withInput();
         }
     }
 
@@ -71,7 +73,7 @@ class PagoCuotasController extends Controller
                 ->with('success', 'Pago de cuota actualizado con éxito.');
         } catch (ValidationException $e) {
             return back()->withErrors($e->validator->errors())
-                         ->withInput();
+                ->withInput();
         }
     }
 
@@ -85,5 +87,9 @@ class PagoCuotasController extends Controller
 
         return redirect()->route('admin.pago_cuotas.index')
             ->with('success', 'Pago de cuota eliminado con éxito.');
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new PagoCuotasExport, 'reporte_pagos_cuotas.xlsx');
     }
 }

@@ -41,74 +41,78 @@
         <h1 class="text-2xl font-bold text-white mb-6">
             Reportar Pago de Cuota
         </h1>
-        <form action="{{ route('admin.pago_cuotas.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.pago_cuotas.store') }}" method="POST" data-flux-component="form">
             @csrf
-            <!-- Campo ID Asociados -->
-            <div>
-                <label for="id_associate" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Asociado <span class="text-red-500">*</span>
-                </label>
-                <select name="id_associate" id="id_associate"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                    <option value="" disabled selected>Seleccione un Asociado</option>
-                    @foreach ($associates as $associate)
-                        <option value="{{ $associate->id }}">{{ $associate->name }}</option>
-                    @endforeach
-                </select>
-                @error('id_associate')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
+
+            {{-- Fila 1: Asociado - Monto - Fecha de Expiración --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="id_associate" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Asociado <span class="text-red-500">*</span>
+                    </label>
+                    <select name="id_associate" id="id_associate"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required>
+                        <option value="" disabled selected>Seleccione un Asociado</option>
+                        @foreach ($associates as $associate)
+                            <option value="{{ $associate->id }}">{{ $associate->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_associate')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Monto <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="amount" name="amount"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                        placeholder="Ej: 100.00" required>
+                    @error('amount')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="expiration_date" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Fecha de Expiración <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="expiration_date" name="expiration_date"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required>
+                    @error('expiration_date')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <!-- Campo Monto -->
-            <div>
-                <label for="amount" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Monto <span class="text-red-500">*</span>
-                </label>
-                <input type="text" id="amount" name="amount"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ej: 100.00" required>
-                @error('amount')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Fecha de Expiración -->
-            <div>
-                <label for="expiration_date" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Fecha de Expiración <span class="text-red-500">*</span>
-                </label>
-                <input type="date" id="expiration_date" name="expiration_date"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                @error('expiration_date')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Fecha de Emisión -->
-            <div>
-                <label for="issue_date" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Fecha de Emisión <span class="text-red-500">*</span>
-                </label>
-                <input type="date" id="issue_date" name="issue_date"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                @error('issue_date')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Estado -->
-            <div>
-                <label for="status" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Estado <span class="text-red-500">*</span>
-                </label>
-                <select id="status" name="status"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
-                    <option value="pendiente">Pendiente</option>
-                    <option value="pagado">Pagado</option>
-                </select>
-                @error('status')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
+
+            {{-- Fila 2: Fecha de Emisión - Estado --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div>
+                    <label for="issue_date" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Fecha de Emisión <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="issue_date" name="issue_date"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                        required>
+                    @error('issue_date')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="status" class="block text-sm font-medium text-zinc-300 mb-1">
+                        Estado <span class="text-red-500">*</span>
+                    </label>
+                    <select id="status" name="status"
+                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="pagado">Pagado</option>
+                    </select>
+                    @error('status')
+                        <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div></div>
             </div>
 
             <div class="relative my-8">
@@ -121,7 +125,7 @@
                 Campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios
             </div>
             <!-- Botón de acción principal -->
-            <div class="flex justify-end">
+            <div class="flex justify-end w-full mt-6">
                 <button type="submit"
                     class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-all duration-200 shadow-lg hover:shadow-xl">
                     Reportar Pago de Cuota
@@ -129,4 +133,3 @@
             </div>
         </form>
     </div>
-</div>

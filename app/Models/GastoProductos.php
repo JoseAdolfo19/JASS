@@ -10,6 +10,7 @@ class GastoProductos extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'description_product',
         'supplier',
         'amount',
