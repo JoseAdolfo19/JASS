@@ -20,6 +20,15 @@
                 <flux:navlist.item icon="users" :href="route('admin.asociados.index')"
                     :current="request() -> routeIs('admin.asociados.index')" wire:navigate>{{ __('Usuarios') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="credit-card" :href="route('admin.pago_cuotas.index')"
+                    :current="request() -> routeIs('admin.pago_cuotas.index')" wire:navigate>{{ __('Pago Cuotas') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="chart-bar" :href="route('admin.reported_incidence.index')"
+                    :current="request() -> routeIs('admin.reported_incidence.index')" wire:navigate>{{ __('Reportes') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="shopping-cart" :href="route('admin.gastoproductos.index')"
+                    :current="request() -> routeIs('admin.gastoproductos.index')" wire:navigate>{{ __('Gasto Productos') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 

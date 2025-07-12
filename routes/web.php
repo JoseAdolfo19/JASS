@@ -26,8 +26,9 @@ Route::middleware(['auth'])->group(function () {
 Route::prefix('admin')->group(function () {
     Route::resource('asociados', AsociadoController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.asociados');
     Route::resource('gastoproductos', GastoProductosController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.gastoproductos');
-    Route::resource('reportes', ReportarIncidenciaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.reportes');
-    Route::resource('pagos', PagoCuotasController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.pagos');
+    Route::resource('reportes', ReportarIncidenciaController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.reported_incidence');
+    Route::resource('pagos', PagoCuotasController::class)->only(['index', 'store', 'update', 'destroy'])->names('admin.pago_cuotas');
+
 });
 
 
