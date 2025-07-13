@@ -20,12 +20,27 @@
                 <flux:navlist.item icon="users" :href="route('admin.asociados.index')"
                     :current="request() -> routeIs('admin.asociados.index')" wire:navigate>{{ __('Usuarios') }}
                 </flux:navlist.item>
+                <flux:navlist.item icon="clipboard-document-list" :href="route('admin.gastoproductos.index')"
+                    :current="request() -> routeIs('admin.gastoproductos.index')" wire:navigate>{{ __('Gasto en Productos') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="tag" :href="route('admin.pago_cuotas.index')"
+                    :current="request() -> routeIs('admin.pago_cuotas.index')" wire:navigate>{{ __('Pago Cuotas') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="clipboard-document-list" :href="route('admin.reported_incidence.index')"
+                    :current="request() -> routeIs('admin.reported_incidence.index')" wire:navigate>{{ __('Reportes') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="user-group" :href="route('admin.task.index')"
+                    :current="request() -> routeIs('admin.task.index')" wire:navigate>{{ __('Faenas') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="user-group" :href="route('admin.comunalassembly.index')"
+                    :current="request() -> routeIs('admin.comunalassembli.index')" wire:navigate>{{ __('Asambleas') }}
+                </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
 
         <flux:spacer />
 
-        <flux:navlist variant="outline">
+        <!-- <flux:navlist variant="outline">
             <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
                 target="_blank">
                 {{ __('Repository') }}
@@ -35,7 +50,7 @@
                 target="_blank">
                 {{ __('Documentation') }}
             </flux:navlist.item>
-        </flux:navlist>
+        </flux:navlist> -->
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">

@@ -1,4 +1,4 @@
-<div class="w-full py-8 px-4 sm:px-6 lg:px-8" x-data="asociateTable()">
+<div class="w-full py-8 px-4 sm:px-6 lg:px-8" x-data="taskTable()">
     <!-- Notificaciones -->
     @if (session('success'))
         <script>
@@ -38,7 +38,7 @@
     <div class="w-full bg-zinc-900 rounded-xl shadow-2xl overflow-hidden p-6 border border-zinc-800">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-white" data-flux-component="heading">
-                Lista de Gasto en Productos
+                Lista Faenas a Realizar
             </h1>
         </div>
 
@@ -47,28 +47,28 @@
                 <thead class="bg-zinc-800">
                     <tr>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">#</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Descripcion del Producto</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Proveedor</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Cantidad</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Costo Total</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Fecha de Compra</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Encargado</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Descricion</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Fecha de Faena</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Tipo de Faena</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Numero de Participantes</th>
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-800">
-                    @foreach ($gastoproductos as $gastoproducto)
+                    @foreach ($tasks as $task)
                         <tr>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->description_product }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->supplier }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->amount }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->total_cost }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $gastoproducto->date_buy }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($task->user->name, 40) }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $task->description }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $task->date_task }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $task->type_task }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $task->number_participants }}</td>
                             </td>
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
-                                    @click="openModal({{ $gastoproducto->id }}, '{{ addslashes($gastoproducto->description_product) }}', '{{ addslashes($gastoproducto->supplier) }}', '{{ addslashes($gastoproducto->amount) }}', '{{ addslashes($gastoproducto->total_cost) }}', '{{ $gastoproducto->date_buy }}')"
+                                    @click="openModal({{ $task->id }}, '{{ addslashes($task->user_id) }}', '{{ addslashes($task->description) }}', '{{ addslashes($task->date_task) }}', '{{ addslashes($task->type_task) }}', '{{ addslashes($task->number_participants) }}')"
                                     class="text-blue-500 hover:text-blue-400 mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -78,7 +78,7 @@
                                 </button>
 
                                 <!-- Botón Eliminar -->
-                                <button onclick="confirmDelete({{ $gastoproducto->id }})"
+                                <button onclick="confirmDelete({{ $task->id }})"
                                     class="text-red-500 hover:text-red-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -89,8 +89,8 @@
                                 </button>
 
                                 <!-- Formulario Eliminar (oculto) -->
-                                <form id="delete-form-{{ $gastoproducto->id }}"
-                                    action="{{ route('admin.gastoproductos.destroy', $gastoproducto->id) }}" method="POST"
+                                <form id="delete-form-{{ $task->id }}"
+                                    action="{{ route('admin.task.destroy', $task->id) }}" method="POST"
                                     class="hidden">
                                     @csrf
                                     @method('DELETE')
@@ -103,9 +103,9 @@
         </div>
 
         <!-- Paginación -->
-        @if ($gastoproductos->hasPages())
+        @if ($tasks->hasPages())
             <div class="mt-6">
-                {{ $gastoproductos->links() }}
+                {{ $tasks->links() }}
             </div>
         @endif
     </div>
@@ -124,47 +124,53 @@
                 <!-- Contenido del Modal -->
                 <div
                     class="inline-block align-bottom bg-zinc-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-zinc-800">
-                    <form :action="'/admin/gastoproductos/' + currentId" method="POST">
+                    <form :action="'/admin/task/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="px-8 py-8">
-                            <h3 class="text-xl font-semibold text-white mb-6">Editar Gasto de Productos</h3>
+                            <h3 class="text-xl font-semibold text-white mb-6">Editar Detalles de la Faena</h3>
 
-                            <!-- Campo Descripcion del producto -->
+                            <!-- Campo nombre del asociado -->
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-300 mb-2">Nombre del Asociado</label>
+                                    <select x-model="currentUserId" name="user_id"
+                                        class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                        <option value="" disabled>Seleccione un Usuario</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            <!-- Campo descripcion -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Descripcion del Producto</label>
-                                <input type="text" x-model="currentDescription_product" name="description_product"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Descripcion de la Faena</label>
+                                <input type="text" x-model="currentDescription" name="description"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
 
-                            <!-- Campo Proveedor -->
+                            <!-- Campo fecha de la faena -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Proveedor</label>
-                                <input type="text" x-model="currentSupplier" name="supplier"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Fecha de la Faena</label>
+                                <input type="text" x-model="currentDate_task" name="date_task"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
 
-                            <!-- Campo Cantidad -->
+                            <!-- Campo tipo de faena -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">DNI</label>
-                                <input type="text" x-model="currentAmount" name="amount"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Tipo de Faena</label>
+                                <input type="text" x-model="currentType_task" name="type_task"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
-                            <!-- Campo Costo total -->
+                            <!-- Campo numero de participantes -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Costo Total</label>
-                                <input type="text" x-model="currentTotal_cost" name="total_cost"
-                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required>
-                            </div>
-                            <!-- Campo Fecha de Compra -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Fecha de Compra</label>
-                                <input type="date" x-model="currentDate_buy" name="date_buy"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Numero de Participantes</label>
+                                <input type="text" x-model="currentNumber_participants" name="number_participants"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
@@ -191,7 +197,7 @@
     // Función para confirmar eliminación
     function confirmDelete(id) {
         Swal.fire({
-            title: '¿Eliminar gasto de producto?',
+            title: '¿Eliminar detalles de la faena?',
             text: "¡No podrás revertir esto!",
             icon: 'warning',
             background: '#18181b',
@@ -213,23 +219,23 @@
     }
 
     // Componente Alpine.js para la tabla
-    function asociateTable() {
+    function taskTable() {
         return {
             isOpen: false,
             currentId: null,
-            currentDescription_product: '',
-            currentSupplier: '',
-            currentAmount:'',
-            currentTotal_cost: '',
-            currentDate_buy: '',
+            currentUserId: '',
+            currentDescription: '',
+            currentDate_task:'',
+            currentType_task: '',
+            currentNumber_participants: '',
 
-            openModal(id, description_product, supplier, amount, total_cost, date_buy) {
+            openModal(id, user_id, description, date_task, type_task, number_participants) {
                 this.currentId = id;
-                this.currentDescription_product = description_product;
-                this.currentSupplier = supplier;
-                this.currentAmount = amount;
-                this.currentTotal_cost = total_cost;
-                this.currentDate_buy = date_buy;
+                this.currentUserId = user_id;
+                this.currentDescription = description;
+                this.currentDate_task = date_task;
+                this.currentType_task = type_task;
+                this.currentNumber_participants = number_participants;
                 this.isOpen = true;
                 document.body.classList.add('overflow-hidden');
             },

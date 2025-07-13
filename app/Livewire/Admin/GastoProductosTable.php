@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class GastoProductosTable extends Component
 {
-     public function render()
+    public function render()
     {
         $gastoproductos = GastoProductos::orderBy('created_at', 'desc')
         ->paginate(10);

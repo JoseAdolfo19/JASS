@@ -131,7 +131,7 @@
                 <!-- Contenido del Modal -->
                 <div
                     class="inline-block align-bottom bg-zinc-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-zinc-800">
-                    <form :action="'/admin/asociado/' + currentId" method="POST">
+                    <form :action="'/admin/asociados/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
 

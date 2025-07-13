@@ -53,7 +53,7 @@
                     required>
                     <option value="" disabled selected>Seleccione un Asociado</option>
                     @foreach ($associates as $associate)
-                        <option value="{{ $associate->id }}">{{ $associate->name }}</option>
+                        <option value="{{ $associate->id }}">{{ $associate->name }} - {{ $associate->last_name }}</option>
                     @endforeach
                 </select>
                 @error('id_associate')
@@ -65,22 +65,10 @@
                 <label for="amount" class="block text-sm font-medium text-zinc-300 mb-1">
                     Monto <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="amount" name="amount"
+                <input type="number" id="amount" name="amount"
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
                     placeholder="Ej: 100.00" required>
                 @error('amount')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
-            <!-- Campo Fecha de Expiración -->
-            <div>
-                <label for="expiration_date" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Fecha de Expiración <span class="text-red-500">*</span>
-                </label>
-                <input type="date" id="expiration_date" name="expiration_date"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
-                    required>
-                @error('expiration_date')
                     <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
             </div>
@@ -93,6 +81,18 @@
                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
                     required>
                 @error('issue_date')
+                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                @enderror
+            </div>
+            <!-- Campo Fecha de Expiración -->
+            <div>
+                <label for="expiration_date" class="block text-sm font-medium text-zinc-300 mb-1">
+                    Fecha de Expiración <span class="text-red-500">*</span>
+                </label>
+                <input type="date" id="expiration_date" name="expiration_date"
+                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white"
+                    required>
+                @error('expiration_date')
                     <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
             </div>

@@ -23,7 +23,6 @@ class GastoProductosController extends Controller
         'amount' => 'required|string|max:255',
         'total_cost' => 'required|numeric|between:0,99999999.99',
         'date_buy' => 'required|string|max:255',
-        'name' => 'required|string|max:255',
     ]);
 
     try {
@@ -35,7 +34,6 @@ class GastoProductosController extends Controller
             'amount' => $request->amount,
             'total_cost' => $request->total_cost,
             'date_buy' => $request->date_buy,
-            'name' => $request->name,
         ]);
 
         return redirect()->route('admin.gastoproductos.index')->with('success', 'Gasto de productos generado exitosamente.');
@@ -74,7 +72,6 @@ class GastoProductosController extends Controller
 
     public function destroy(string $id)
     {
-        
         GastoProductos::findOrFail($id)->delete();
         return redirect()->route('admin.gastoproductos.index')->with('success', 'El gasto de productos a sido eliminado correctamente.');
     }

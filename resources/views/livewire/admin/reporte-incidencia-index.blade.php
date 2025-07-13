@@ -53,7 +53,7 @@
                     required>
                     <option value="" disabled selected>Seleccione un Asociado</option>
                     @foreach ($associates as $associate)
-                        <option value="{{ $associate->id }}">{{ $associate->name }}</option>
+                        <option value="{{ $associate->id }}">{{ $associate->name }} - {{ $associate->last_name }}</option>
                     @endforeach
                 </select>
                 @error('id_associates')
