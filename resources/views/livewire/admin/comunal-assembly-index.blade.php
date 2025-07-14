@@ -124,7 +124,7 @@
                 <button type="submit"
                     class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-zinc-900 transition-all duration-200 shadow-lg hover:shadow-xl"
                     data-flux-component="button">
-                    Registrar Gasto de Productos
+                    Registrar Asamblea
                 </button>
             </div>
         </form>
