@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\GastoProductos;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -74,5 +75,12 @@ class GastoProductosController extends Controller
     {
         GastoProductos::findOrFail($id)->delete();
         return redirect()->route('admin.gastoproductos.index')->with('success', 'El gasto de productos a sido eliminado correctamente.');
+    }
+
+    public function exportPdf()
+    {
+    $gastoproductos = GastoProductos::where('status', 1)->orWhere('status', 0)->get();
+    $pdf = Pdf::loadView('Admin.gastoproductos.pdf', compact('gastoproductos'));
+    return $pdf->download('gastoproductos.pdf');
     }
 }

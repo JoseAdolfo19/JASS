@@ -12,7 +12,7 @@
 
     <style>
         body {
-           background-image: url('https://blogcusco.com/wp-content/uploads/catarata-arin02.webp'); /* Cambia esto por la URL de tu imagen */
+           background-image: url('http://blogcusco.com/wp-content/uploads/catarata-arin02.webp'); /* Cambia esto por la URL de tu imagen */
            background-size: cover; 
             color: #004D40; /* Dark teal for text */
             display: flex;
@@ -61,9 +61,6 @@
                     <a href="{{ url('/dashboard') }}" class="button">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="button">Iniciar Secion</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="button">Registrar</a>
-                    @endif
                 @endauth
             </nav>
         @endif
