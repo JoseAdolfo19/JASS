@@ -1,0 +1,42 @@
+<?php
+require_once 'BaseSeleniumTest.php';
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverWait;
+
+class IncidenciaTest extends BaseSeleniumTest
+{
+    public function testReportarIncidenciaExitoso()
+    {
+        $this->driver->get('http://localhost:8000/reportar-incidencia');
+
+        $wait = new WebDriverWait($this->driver, 10);
+
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('associate_name'))
+        )->sendKeys('Jose Adolfo'); 
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('location'))
+        )->sendKeys('9 de noviembre');
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('description'))
+        )->sendKeys('Rompio una tuberia');
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('type_incidence'))
+        )->sendKeys('Tuberia Rota');
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('date_reported'))
+        )->sendKeys(date('2025-07-16'));
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::name('status'))
+        )->sendKeys('Pendiente');
+        $wait->until(
+            WebDriverExpectedCondition::elementToBeClickable(WebDriverBy::cssSelector('button[type="submit"]'))
+        )->click();
+        $wait->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::cssSelector('.alert-success'))
+        );
+
+        echo $this->driver->getPageSource();
+    }
+}
